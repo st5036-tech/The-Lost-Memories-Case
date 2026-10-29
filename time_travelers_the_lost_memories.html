@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Travelers: The Lost Memories</title>
+    <!-- Tailwind CSS (CDN for rapid dynamic styling with inline SVG icons) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'time-blue': '#0284c7',
+                        'time-cyan': '#06b6d4',
+                        'time-teal': '#14b8a6',
+                        'time-orange': '#f97316',
+                        'time-yellow': '#eab308',
+                        'time-purple': '#8b5cf6',
+                        'time-light': '#f0f9ff'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Keyframe Animations & Micro-interactions */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(139, 92, 246, 0.6); }
+        }
+        .portal-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+        @keyframes floatEffect {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .floating {
+            animation: floatEffect 4s infinite ease-in-out;
+        }
+        /* Custom Scrollbar for crisp modern feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-sky-50 via-cyan-50 to-indigo-50 min-h-screen text-slate-800 font-sans flex flex-col justify-between">
+
+    <!-- TOP HEADER / NAV BAR -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-sky-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <!-- Brand & Title -->
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-gradient-to-br from-time-cyan to-time-blue text-white rounded-2xl shadow-md floating">
+                    <!-- SVG Time Portal Icon -->
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9" stroke-width="2" stroke-dasharray="4 2"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7v5l3 3"/>
+                        <circle cx="12" cy="12" r="3" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-black bg-gradient-to-r from-time-blue via-time-purple to-time-orange bg-clip-text text-transparent uppercase tracking-wider">
+                        Time Travelers
+                    </h1>
+                    <p class="text-xs font-semibold text-slate-500 flex items-center gap-1">
+                        <span>THE LOST MEMORIES</span>
+                        <span id="classHeaderTag" class="bg-sky-100 text-sky-800 px-2 py-0.5 rounded-full text-[10px]">Class Unset</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Active Team Status Bar -->
+            <div class="flex items-center gap-4 bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl">
+                <div class="text-left">
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Active Traveler Team</span>
+                    <select id="activeTeamSelect" onchange="changeActiveTeam(this.value)" class="bg-transparent font-bold text-time-blue focus:outline-none cursor-pointer text-sm md:text-base">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <div class="h-8 w-px bg-slate-200"></div>
+                <div class="text-center">
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Team Score</span>
+                    <span id="activeTeamScore" class="font-extrabold text-time-orange text-lg">0 XP</span>
+                </div>
+            </div>
+
+            <!-- Header Action Controls -->
+            <div class="flex items-center gap-2">
+                <button onclick="toggleTeacherPanel()" class="bg-purple-100 hover:bg-purple-200 text-purple-700 px-3 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    Teacher Hub
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP WRAPPER -->
+    <main class="max-w-7xl mx-auto px-4 py-6 w-full flex-grow grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+        <!-- LEFT COLUMN: STAGE MAP & NAVIGATION -->
+        <aside class="lg:col-span-1 space-y-6">
+            <!-- Time Mission Progress Map Card -->
+            <div class="bg-white rounded-3xl p-5 border border-sky-100 shadow-sm relative overflow-hidden">
+                <div class="absolute -right-6 -bottom-6 text-sky-100 opacity-50 pointer-events-none">
+                    <svg class="w-36 h-36" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                </div>
+                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center justify-between">
+                    <span>Timeline Stages</span>
+                    <span id="overallProgressText" class="text-time-blue font-extrabold">0%</span>
+                </h2>
+
+                <!-- Timeline Progress Bar -->
+                <div class="w-full bg-slate-100 h-2.5 rounded-full mb-6 overflow-hidden">
+                    <div id="overallProgressBar" class="bg-gradient-to-r from-time-cyan to-time-purple h-full w-0 transition-all duration-500"></div>
+                </div>
+
+                <!-- Stage Navigation List -->
+                <div class="space-y-3 relative z-10">
+                    <!-- Stage 1 Nav item -->
+                    <button id="navStage1" onclick="switchStage(1)" class="w-full text-left p-3.5 rounded-2xl border-2 transition-all flex items-center justify-between bg-sky-50 border-time-cyan text-time-blue font-bold shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-time-cyan text-white flex items-center justify-center text-sm font-extrabold">1</div>
+                            <div>
+                                <div class="text-sm">Stage 1</div>
+                                <div class="text-xs text-slate-500 font-normal">Recover Verbs</div>
+                            </div>
+                        </div>
+                        <span id="badgeStage1" class="text-xs bg-cyan-100 text-cyan-800 px-2 py-0.5 rounded-md font-bold">Active</span>
+                    </button>
+
+                    <!-- Stage 2 Nav item -->
+                    <button id="navStage2" onclick="switchStage(2)" class="w-full text-left p-3.5 rounded-2xl border-2 border-slate-100 bg-slate-50 text-slate-400 font-semibold transition-all flex items-center justify-between hover:bg-sky-50/50">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-slate-200 text-slate-500 flex items-center justify-center text-sm font-extrabold" id="numStage2">2</div>
+                            <div>
+                                <div class="text-sm">Stage 2</div>
+                                <div class="text-xs text-slate-400 font-normal">Rebuild Memories</div>
+                            </div>
+                        </div>
+                        <span id="badgeStage2" class="text-xs bg-slate-200 text-slate-600 px-2 py-0.5 rounded-md font-bold">Locked</span>
+                    </button>
+
+                    <!-- Stage 3 Nav item -->
+                    <button id="navStage3" onclick="switchStage(3)" class="w-full text-left p-3.5 rounded-2xl border-2 border-slate-100 bg-slate-50 text-slate-400 font-semibold transition-all flex items-center justify-between hover:bg-sky-50/50">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-slate-200 text-slate-500 flex items-center justify-center text-sm font-extrabold" id="numStage3">3</div>
+                            <div>
+                                <div class="text-sm">Stage 3</div>
+                                <div class="text-xs text-slate-400 font-normal">Lost Memories Case</div>
+                            </div>
+                        </div>
+                        <span id="badgeStage3" class="text-xs bg-slate-200 text-slate-600 px-2 py-0.5 rounded-md font-bold">Locked</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- LEADERBOARD WIDGET -->
+            <div class="bg-white rounded-3xl p-5 border border-sky-100 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-time-yellow" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/></svg>
+                        Leaderboard
+                    </h2>
+                    <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full">Live XP</span>
+                </div>
+                <div id="leaderboardList" class="space-y-2.5">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- CENTER / RIGHT COLUMN: INTERACTIVE MISSION CONTENT -->
+        <section class="lg:col-span-3 space-y-6">
+
+            <!-- STAGE 1: RECOVER THE VERBS -->
+            <div id="stage1View" class="bg-white rounded-3xl p-6 border border-sky-100 shadow-sm transition-all">
+                <!-- Header -->
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <span class="bg-cyan-100 text-time-cyan text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">Stage 1 Mission</span>
+                        <h2 class="text-2xl font-black text-slate-800 mt-1">Recover the Verbs</h2>
+                        <p class="text-xs text-slate-500">Restore time flow by mastering base verbs and their Simple Past forms!</p>
+                    </div>
+                    <!-- Sub-tabs for Stage 1 Tasks -->
+                    <div class="flex bg-slate-100 p-1 rounded-2xl gap-1 text-xs font-bold">
+                        <button onclick="setStage1Task('match')" id="btnTaskMatch" class="px-3 py-1.5 rounded-xl bg-white text-time-blue shadow-sm">Matching</button>
+                        <button onclick="setStage1Task('mcq')" id="btnTaskMcq" class="px-3 py-1.5 rounded-xl text-slate-500 hover:text-slate-800">Multiple Choice</button>
+                        <button onclick="setStage1Task('fill')" id="btnTaskFill" class="px-3 py-1.5 rounded-xl text-slate-500 hover:text-slate-800">Fill in Blanks</button>
+                    </div>
+                </div>
+
+                <!-- Stage 1 Task 1: Matching Game -->
+                <div id="s1TaskMatch" class="space-y-6">
+                    <p class="text-sm font-medium text-slate-600 bg-sky-50 border border-sky-100 p-3 rounded-2xl flex items-center gap-2">
+                        <svg class="w-5 h-5 text-time-cyan flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Click a <strong>Base Verb</strong> on the left, then click its matching <strong>Simple Past</strong> form on the right.
+                    </p>
+
+                    <div class="grid grid-cols-2 md:grid-cols-2 gap-4 max-w-xl mx-auto">
+                        <!-- Left Column: Base Verbs -->
+                        <div id="matchBaseCol" class="space-y-2.5">
+                            <!-- JS Generated -->
+                        </div>
+                        <!-- Right Column: Past Verbs -->
+                        <div id="matchPastCol" class="space-y-2.5">
+                            <!-- JS Generated -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 1 Task 2: MCQ -->
+                <div id="s1TaskMcq" class="hidden space-y-6">
+                    <div class="flex justify-between items-center bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <span class="text-xs font-bold text-slate-500" id="mcqCounter">Question 1 of 5</span>
+                        <span class="text-xs font-bold text-time-orange">+10 XP per correct choice</span>
+                    </div>
+
+                    <div id="mcqContainer" class="p-6 border-2 border-sky-100 rounded-3xl bg-gradient-to-b from-sky-50/30 to-white text-center space-y-6">
+                        <!-- Dynamic MCQ Question -->
+                    </div>
+                </div>
+
+                <!-- Stage 1 Task 3: Fill in Blanks -->
+                <div id="s1TaskFill" class="hidden space-y-6">
+                    <div class="bg-purple-50 border border-purple-100 p-4 rounded-2xl text-purple-900 text-sm">
+                        Type the correct <strong>Simple Past form</strong> of the verb in brackets to complete each temporal log.
+                    </div>
+                    <div id="fillContainer" class="space-y-4">
+                        <!-- JS Generated Fill Questions -->
+                    </div>
+                    <div class="text-right">
+                        <button onclick="checkFillAnswers()" class="bg-time-purple hover:bg-purple-700 text-white font-bold px-6 py-3 rounded-2xl shadow-md transition">
+                            Verify Past Forms
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stage Feedback Banner -->
+                <div id="stage1Feedback" class="hidden mt-6 p-4 rounded-2xl border font-bold text-sm flex items-center justify-between">
+                    <span id="stage1FeedbackText"></span>
+                </div>
+            </div>
+
+            <!-- STAGE 2: REBUILD THE MEMORIES -->
+            <div id="stage2View" class="hidden bg-white rounded-3xl p-6 border border-sky-100 shadow-sm transition-all">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <span class="bg-indigo-100 text-time-purple text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">Stage 2 Mission</span>
+                        <h2 class="text-2xl font-black text-slate-800 mt-1">Rebuild the Memories</h2>
+                        <p class="text-xs text-slate-500">Master affirmative, negative, and interrogative Simple Past structures using <code class="bg-slate-100 px-1 py-0.5 rounded text-pink-600">did / didn't + base verb</code>!</p>
+                    </div>
+                    <div id="stage2ProgressBadge" class="text-xs font-bold bg-purple-100 text-purple-800 px-3 py-1.5 rounded-xl">
+                        Progress: <span id="s2Prog">0</span> / 4 Challenges
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Rule Helper Banner -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-2xl text-emerald-900">
+                            <div class="font-extrabold text-emerald-700 mb-1">Affirmative</div>
+                            Subject + <strong>Past Verb</strong><br>
+                            <em>"She visited her grandmother."</em>
+                        </div>
+                        <div class="bg-rose-50 border border-rose-200 p-3 rounded-2xl text-rose-900">
+                            <div class="font-extrabold text-rose-700 mb-1">Negative</div>
+                            Subject + <strong>didn't + Base Verb</strong><br>
+                            <em>"They didn't watch a movie."</em>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 p-3 rounded-2xl text-amber-900">
+                            <div class="font-extrabold text-amber-700 mb-1">Interrogative</div>
+                            <strong>Did</strong> + Subject + <strong>Base Verb?</strong><br>
+                            <em>"Did he play soccer?"</em>
+                        </div>
+                    </div>
+
+                    <!-- Stage 2 Interactive Cards -->
+                    <div id="stage2CardsContainer" class="space-y-4">
+                        <!-- JS Generated Sentences -->
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button onclick="checkStage2Sentences()" class="bg-time-blue hover:bg-sky-700 text-white font-bold px-6 py-3 rounded-2xl shadow-md transition">
+                            Check Memory Structure
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAGE 3: THE LOST MEMORIES CASE -->
+            <div id="stage3View" class="hidden bg-white rounded-3xl p-6 border border-sky-100 shadow-sm transition-all space-y-6">
+                <div class="border-b border-slate-100 pb-4">
+                    <span class="bg-amber-100 text-amber-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">Stage 3 Mission</span>
+                    <h2 class="text-2xl font-black text-slate-800 mt-1">The Lost Memories Case: Alex's Saturday</h2>
+                    <p class="text-xs text-slate-500">Analyze the timeline record and solve the final temporal case.</p>
+                </div>
+
+                <!-- Story Memory Card -->
+                <div class="bg-gradient-to-r from-amber-50 via-sky-50 to-indigo-50 border-2 border-amber-200 p-6 rounded-3xl shadow-inner space-y-3 relative overflow-hidden">
+                    <div class="flex items-center gap-2 text-amber-900 font-extrabold text-base border-b border-amber-200/60 pb-2">
+                        <!-- Treasure / Logbook SVG -->
+                        <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C20.832 18.477 19.247 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        <span>Recovered Log File #1028: "Alex's Weekend"</span>
+                    </div>
+                    <p class="text-base md:text-lg text-slate-700 italic font-medium leading-relaxed">
+                        "Last Saturday, Alex went to the park. He played basketball, ate a sandwich, and took pictures. He didn't watch a movie. Later, he visited his grandmother."
+                    </p>
+                </div>
+
+                <!-- Part A: Reading Comprehension -->
+                <div class="space-y-4">
+                    <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-time-cyan text-white text-xs flex items-center justify-center font-black">A</span>
+                        Comprehension Verification (Auto-Scored)
+                    </h3>
+                    <div id="s3CompQuestions" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- JS generated questions -->
+                    </div>
+                </div>
+
+                <!-- Part B: Sentence Construction (Teacher Reviewed) -->
+                <div class="space-y-4 pt-4 border-t border-slate-100">
+                    <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-time-purple text-white text-xs flex items-center justify-center font-black">B</span>
+                        Construct Time Sentences (Teacher Reviewed &amp; Graded)
+                    </h3>
+                    <p class="text-xs text-slate-500">Construct 3 custom sentences based on Alex's story or your team's timeline experience.</p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">1. Construct ONE Affirmative Simple Past sentence:</label>
+                            <input type="text" id="s3AffirmativeInput" placeholder="e.g., Alex ate a sandwich at the park." class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-time-purple">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">2. Construct ONE Negative Simple Past sentence:</label>
+                            <input type="text" id="s3NegativeInput" placeholder="e.g., Alex didn't watch a movie." class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-time-purple">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">3. Construct ONE Interrogative Simple Past sentence:</label>
+                            <input type="text" id="s3InterrogativeInput" placeholder="e.g., Did Alex visit his grandmother?" class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-time-purple">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-2">
+                        <span id="s3SaveStatus" class="text-xs font-bold text-emerald-600"></span>
+                        <button onclick="submitStage3Answers()" class="bg-time-orange hover:bg-orange-600 text-white font-bold px-6 py-3 rounded-2xl shadow-md transition">
+                            Submit Case Sentences
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BADGES & ACHIEVEMENT UNLOCK PANEL -->
+            <div class="bg-white rounded-3xl p-6 border border-sky-100 shadow-sm">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-time-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                    Team Accomplishment Badges
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Badge 1 -->
+                    <div id="badgeCard1" class="border-2 border-slate-100 bg-slate-50 p-4 rounded-2xl flex items-center gap-3 opacity-50 transition-all">
+                        <div class="p-3 bg-amber-100 text-amber-600 rounded-xl">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        </div>
+                        <div>
+                            <div class="font-extrabold text-sm text-slate-800">Verb Hunter</div>
+                            <div class="text-[11px] text-slate-500">Complete Stage 1</div>
+                        </div>
+                    </div>
+                    <!-- Badge 2 -->
+                    <div id="badgeCard2" class="border-2 border-slate-100 bg-slate-50 p-4 rounded-2xl flex items-center gap-3 opacity-50 transition-all">
+                        <div class="p-3 bg-indigo-100 text-indigo-600 rounded-xl">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        </div>
+                        <div>
+                            <div class="font-extrabold text-sm text-slate-800">Past Tense Master</div>
+                            <div class="text-[11px] text-slate-500">Complete Stage 2</div>
+                        </div>
+                    </div>
+                    <!-- Badge 3 -->
+                    <div id="badgeCard3" class="border-2 border-slate-100 bg-slate-50 p-4 rounded-2xl flex items-center gap-3 opacity-50 transition-all">
+                        <div class="p-3 bg-emerald-100 text-emerald-600 rounded-xl">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 5h-3v3h3V7zm-4 0H9v3h3V7zm0 5H9v3h3v-3zm-4 0H6v3h2v-3zm0 5H6v2h2v-2zm4 0h-3v2h3v-2zm4 0h-3v2h3v-2zm0-5h-3v3h3v-3z"/></svg>
+                        </div>
+                        <div>
+                            <div class="font-extrabold text-sm text-slate-800">Memory Recovery Expert</div>
+                            <div class="text-[11px] text-slate-500">Complete Stage 3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- TEACHER CONTROL HUB MODAL / PANEL -->
+    <div id="teacherModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto border border-purple-100">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                <div class="flex items-center gap-2">
+                    <div class="p-2 bg-purple-100 text-purple-700 rounded-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-black text-slate-800">Teacher Control Panel</h2>
+                        <p class="text-xs text-slate-500">Manage class settings, manual points, sentence reviews, and progress.</p>
+                    </div>
+                </div>
+                <button onclick="toggleTeacherPanel()" class="text-slate-400 hover:text-slate-600 font-bold p-2">✕</button>
+            </div>
+
+            <!-- Class Setup -->
+            <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <h3 class="text-xs font-black uppercase text-slate-400 tracking-wider">Class &amp; Team Setup</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Class Name:</label>
+                        <input type="text" id="classNameInput" placeholder="e.g., Grade 6 - Room A" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="saveClassName()" class="w-full bg-time-blue hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition">Update Class Name</button>
+                    </div>
+                </div>
+
+                <div class="space-y-2 pt-2">
+                    <label class="block text-xs font-bold text-slate-600">Edit Team Names (Minimum 3 Teams):</label>
+                    <div id="teacherTeamInputs" class="space-y-2">
+                        <!-- Populated by JS -->
+                    </div>
+                    <button onclick="saveTeamNames()" class="mt-2 bg-time-teal hover:bg-teal-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition">
+                        Save Team Names
+                    </button>
+                </div>
+            </div>
+
+            <!-- Manual Score & Stage Controls -->
+            <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <h3 class="text-xs font-black uppercase text-slate-400 tracking-wider">Score &amp; Stage Overrides</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Select Team:</label>
+                        <select id="manualTeamSelect" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm bg-white">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Adjust XP (+/-):</label>
+                        <input type="number" id="manualXpDelta" placeholder="e.g. 20 or -10" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm">
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="applyManualXp()" class="w-full bg-time-orange hover:bg-orange-600 text-white font-bold py-2 rounded-xl text-sm transition">
+                            Apply XP
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Stage 3 Sentences -->
+            <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                <h3 class="text-xs font-black uppercase text-slate-400 tracking-wider">Review Stage 3 Student Sentences</h3>
+                <div id="teacherSentenceReviewList" class="space-y-3 max-h-48 overflow-y-auto">
+                    <!-- JS Generated list -->
+                </div>
+            </div>
+
+            <!-- Export & Reset Controls -->
+            <div class="pt-2 flex flex-wrap justify-between items-center gap-3 border-t border-slate-100">
+                <button onclick="exportScoresCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    Export Scores (CSV)
+                </button>
+                <button onclick="confirmResetAllData()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition">
+                    Reset All Game Progress
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM NOTIFICATION / MESSAGE MODAL (REPLACES ALERT) -->
+    <div id="msgModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl text-center space-y-4 border border-sky-100">
+            <div id="msgIcon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center text-white bg-time-blue font-black text-xl">
+                !
+            </div>
+            <h3 id="msgTitle" class="text-lg font-black text-slate-800">Notice</h3>
+            <p id="msgBody" class="text-sm text-slate-600 leading-relaxed"></p>
+            <button onclick="closeMsgModal()" class="w-full bg-time-blue hover:bg-sky-700 text-white font-bold py-2.5 rounded-2xl transition text-sm">
+                Continue Time Travel
+            </button>
+        </div>
+    </div>
+
+    <!-- FINAL RESULTS / VICTORY MODAL -->
+    <div id="victoryModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-8 shadow-2xl text-center space-y-6 portal-glow relative overflow-hidden">
+            <div class="text-time-yellow floating mx-auto w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center">
+                <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/></svg>
+            </div>
+            <div>
+                <span class="text-xs font-black uppercase tracking-widest text-time-purple bg-purple-50 px-3 py-1 rounded-full">Timeline Restored!</span>
+                <h2 class="text-3xl font-black text-slate-800 mt-2">Mission Accomplished</h2>
+                <p class="text-sm text-slate-500 mt-1">All lost memories have been recovered successfully!</p>
+            </div>
+
+            <div class="bg-gradient-to-br from-amber-50 to-sky-50 border border-amber-200 rounded-2xl p-5 space-y-2">
+                <span class="text-xs font-bold text-amber-700 uppercase">🏆 Winning Time Traveler Team</span>
+                <div id="winningTeamName" class="text-2xl font-black text-slate-800">Team Alpha</div>
+                <div id="winningTeamXP" class="text-lg font-extrabold text-time-orange">0 XP</div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="exportScoresCSV()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-2xl text-sm transition">
+                    Export Final Results
+                </button>
+                <button onclick="closeVictoryModal()" class="flex-1 bg-time-blue hover:bg-sky-700 text-white font-bold py-3 rounded-2xl text-sm transition">
+                    Review Mission
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-3 px-4 text-center text-xs text-slate-400">
+        TIME TRAVELERS: THE LOST MEMORIES &bull; Offline Grammar Learning Platform &bull; Simple Past Tense Mastery
+    </footer>
+
+    <!-- INTERACTIVE GAME ENGINE & STATE MANAGEMENT -->
+    <script>
+        /* ==========================================================================
+           1. GAME DATA STRUCTURES & VERB DATABASE
+           ========================================================================== */
+        const VERB_PAIRS = [
+            { base: 'play', past: 'played', regular: true },
+            { base: 'visit', past: 'visited', regular: true },
+            { base: 'watch', past: 'watched', regular: true },
+            { base: 'go', past: 'went', regular: false },
+            { base: 'eat', past: 'ate', regular: false },
+            { base: 'see', past: 'saw', regular: false },
+            { base: 'have', past: 'had', regular: false },
+            { base: 'take', past: 'took', regular: false },
+            { base: 'buy', past: 'bought', regular: false },
+            { base: 'write', past: 'wrote', regular: false }
+        ];
+
+        const S1_MCQ_QUESTIONS = [
+            {
+                q: 'What is the correct Simple Past form of the verb "go"?',
+                options: ['goed', 'went', 'gone', 'going'],
+                correct: 'went'
+            },
+            {
+                q: 'What is the correct Simple Past form of the verb "eat"?',
+                options: ['eaten', 'eated', 'ate', 'ates'],
+                correct: 'ate'
+            },
+            {
+                q: 'Select the Simple Past form of "write":',
+                options: ['wrote', 'writed', 'written', 'writes'],
+                correct: 'wrote'
+            },
+            {
+                q: 'Select the Simple Past form of "buy":',
+                options: ['buyed', 'bought', 'boughted', 'buys'],
+                correct: 'bought'
+            },
+            {
+                q: 'Select the Simple Past form of "see":',
+                options: ['saw', 'seed', 'seen', 'sees'],
+                correct: 'saw'
+            }
+        ];
+
+        const S1_FILL_QUESTIONS = [
+            { prompt: 'Yesterday, Sarah', verb: 'play', post: 'soccer with her classmates.', answer: 'played' },
+            { prompt: 'Last week, my family', verb: 'visit', post: 'our grandparents in the countryside.', answer: 'visited' },
+            { prompt: 'They', verb: 'take', post: 'many beautiful photos during the time tour.', answer: 'took' },
+            { prompt: 'We', verb: 'have', post: 'a wonderful time during history class.', answer: 'had' }
+        ];
+
+        const S2_STRUCTURE_QUESTIONS = [
+            {
+                id: 1,
+                type: 'mcq',
+                title: 'Affirmative Structure',
+                prompt: 'Choose the sentence with the correct Simple Past affirmative structure:',
+                options: [
+                    'She visited her grandmother yesterday.',
+                    'She visit her grandmother yesterday.',
+                    'She was visited her grandmother yesterday.'
+                ],
+                correctIndex: 0
+            },
+            {
+                id: 2,
+                type: 'mcq',
+                title: 'Negative Structure',
+                prompt: 'Choose the sentence with the correct Simple Past negative structure:',
+                options: [
+                    'They didn\'t watched a movie.',
+                    'They didn\'t watch a movie.',
+                    'They don\'t watched a movie.'
+                ],
+                correctIndex: 1
+            },
+            {
+                id: 3,
+                type: 'fill',
+                title: 'Interrogative Structure',
+                prompt: 'Complete the question: "______ he play soccer yesterday?"',
+                answer: 'Did'
+            },
+            {
+                id: 4,
+                type: 'correction',
+                title: 'Sentence Correction',
+                prompt: 'Fix this sentence: "We goed to the park last Sunday."',
+                options: [
+                    'We went to the park last Sunday.',
+                    'We going to the park last Sunday.',
+                    'We did went to the park last Sunday.'
+                ],
+                correctIndex: 0
+            }
+        ];
+
+        const S3_COMPREHENSION = [
+            {
+                id: 'q1',
+                q: '1. Where did Alex go last Saturday?',
+                options: ['To the museum', 'To the park', 'To the beach'],
+                correct: 'To the park'
+            },
+            {
+                id: 'q2',
+                q: '2. What did Alex eat?',
+                options: ['A pizza', 'A sandwich', 'An apple'],
+                correct: 'A sandwich'
+            },
+            {
+                id: 'q3',
+                q: '3. Did Alex watch a movie?',
+                options: ['Yes, he did.', 'No, he didn\'t.'],
+                correct: 'No, he didn\'t.'
+            },
+            {
+                id: 'q4',
+                q: '4. Who did Alex visit later?',
+                options: ['His teacher', 'His friend', 'His grandmother'],
+                correct: 'His grandmother'
+            }
+        ];
+
+        /* ==========================================================================
+           2. GLOBAL GAME STATE & LOCALSTORAGE PERSISTENCE
+           ========================================================================== */
+        const STORAGE_KEY = 'TIME_TRAVELERS_GAME_STATE_V1';
+
+        let gameState = {
+            className: 'Class 6A Time Explorers',
+            activeTeamId: 'team_1',
+            teams: [
+                { id: 'team_1', name: 'Chronos Crew', xp: 0, stage: 1, s1Completed: false, s2Completed: false, s3Completed: false, s3Sentences: { aff: '', neg: '', int: '', graded: false } },
+                { id: 'team_2', name: 'Quantum Seekers', xp: 0, stage: 1, s1Completed: false, s2Completed: false, s3Completed: false, s3Sentences: { aff: '', neg: '', int: '', graded: false } },
+                { id: 'team_3', name: 'Temporal Knights', xp: 0, stage: 1, s1Completed: false, s2Completed: false, s3Completed: false, s3Sentences: { aff: '', neg: '', int: '', graded: false } }
+            ]
+        };
+
+        // Temporary session state for Stage 1 matching & MCQ
+        let selectedBaseVerb = null;
+        let matchedPairsCount = 0;
+        let currentMcqIndex = 0;
+
+        /* Load State on Launch */
+        function loadGameState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    gameState = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Failed to parse saved state', e);
+                }
+            }
+            saveGameState();
+        }
+
+        function saveGameState() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+            renderUI();
+        }
+
+        /* Helper getter for current team */
+        function getActiveTeam() {
+            let team = gameState.teams.find(t => t.id === gameState.activeTeamId);
+            if (!team && gameState.teams.length > 0) {
+                team = gameState.teams[0];
+                gameState.activeTeamId = team.id;
+            }
+            return team;
+        }
+
+        /* ==========================================================================
+           3. UI RENDER ENGINE
+           ========================================================================== */
+        function renderUI() {
+            const team = getActiveTeam();
+
+            // Header info
+            document.getElementById('classHeaderTag').innerText = gameState.className || 'Class Unset';
+            document.getElementById('activeTeamScore').innerText = (team ? team.xp : 0) + ' XP';
+
+            // Active Team Select Dropdown
+            const activeSelect = document.getElementById('activeTeamSelect');
+            activeSelect.innerHTML = '';
+            gameState.teams.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.id;
+                opt.innerText = t.name;
+                if (t.id === gameState.activeTeamId) opt.selected = true;
+                activeSelect.appendChild(opt);
+            });
+
+            // Stage map unlock statuses
+            updateStageMapUI(team);
+
+            // Leaderboard
+            renderLeaderboard();
+
+            // Teacher modal team inputs
+            renderTeacherInputs();
+
+            // Badges
+            renderBadges(team);
+        }
+
+        function updateStageMapUI(team) {
+            if (!team) return;
+
+            // Overall Progress calculate
+            let completedStages = 0;
+            if (team.s1Completed) completedStages++;
+            if (team.s2Completed) completedStages++;
+            if (team.s3Completed) completedStages++;
+            const pct = Math.round((completedStages / 3) * 100);
+
+            document.getElementById('overallProgressText').innerText = pct + '%';
+            document.getElementById('overallProgressBar').style.width = pct + '%';
+
+            // Stage 1 status
+            const badge1 = document.getElementById('badgeStage1');
+            if (team.s1Completed) {
+                badge1.className = 'text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-bold';
+                badge1.innerText = 'Completed';
+            } else {
+                badge1.className = 'text-xs bg-cyan-100 text-cyan-800 px-2 py-0.5 rounded-md font-bold';
+                badge1.innerText = 'Active';
+            }
+
+            // Stage 2 status
+            const nav2 = document.getElementById('navStage2');
+            const num2 = document.getElementById('numStage2');
+            const badge2 = document.getElementById('badgeStage2');
+            if (team.s1Completed) {
+                nav2.classList.remove('bg-slate-50', 'text-slate-400', 'border-slate-100');
+                nav2.classList.add('bg-white', 'text-slate-800', 'border-time-purple');
+                num2.className = 'w-8 h-8 rounded-xl bg-time-purple text-white flex items-center justify-center text-sm font-extrabold';
+                if (team.s2Completed) {
+                    badge2.className = 'text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-bold';
+                    badge2.innerText = 'Completed';
+                } else {
+                    badge2.className = 'text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded-md font-bold';
+                    badge2.innerText = 'Unlocked';
+                }
+            } else {
+                badge2.className = 'text-xs bg-slate-200 text-slate-600 px-2 py-0.5 rounded-md font-bold';
+                badge2.innerText = 'Locked';
+            }
+
+            // Stage 3 status
+            const nav3 = document.getElementById('navStage3');
+            const num3 = document.getElementById('numStage3');
+            const badge3 = document.getElementById('badgeStage3');
+            if (team.s2Completed) {
+                nav3.classList.remove('bg-slate-50', 'text-slate-400', 'border-slate-100');
+                nav3.classList.add('bg-white', 'text-slate-800', 'border-time-orange');
+                num3.className = 'w-8 h-8 rounded-xl bg-time-orange text-white flex items-center justify-center text-sm font-extrabold';
+                if (team.s3Completed) {
+                    badge3.className = 'text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-bold';
+                    badge3.innerText = 'Completed';
+                } else {
+                    badge3.className = 'text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md font-bold';
+                    badge3.innerText = 'Unlocked';
+                }
+            } else {
+                badge3.className = 'text-xs bg-slate-200 text-slate-600 px-2 py-0.5 rounded-md font-bold';
+                badge3.innerText = 'Locked';
+            }
+        }
+
+        function renderLeaderboard() {
+            const list = document.getElementById('leaderboardList');
+            list.innerHTML = '';
+
+            // Sort teams by XP descending
+            const sorted = [...gameState.teams].sort((a, b) => b.xp - a.xp);
+
+            sorted.forEach((t, index) => {
+                const item = document.createElement('div');
+                const isCurrent = t.id === gameState.activeTeamId;
+                item.className = `flex items-center justify-between p-3 rounded-2xl border transition ${
+                    isCurrent ? 'bg-sky-50 border-time-cyan shadow-sm' : 'bg-slate-50 border-slate-100'
+                }`;
+
+                let rankBadge = `<span class="text-xs font-black text-slate-400 w-5">#${index + 1}</span>`;
+                if (index === 0) rankBadge = `<span class="text-xs font-black text-amber-500 w-5">🥇</span>`;
+                if (index === 1) rankBadge = `<span class="text-xs font-black text-slate-400 w-5">🥈</span>`;
+                if (index === 2) rankBadge = `<span class="text-xs font-black text-amber-700 w-5">🥉</span>`;
+
+                item.innerHTML = `
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        ${rankBadge}
+                        <span class="text-xs font-extrabold text-slate-700 truncate">${t.name}</span>
+                    </div>
+                    <span class="text-xs font-black text-time-orange">${t.xp} XP</span>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function renderBadges(team) {
+            if (!team) return;
+            const b1 = document.getElementById('badgeCard1');
+            const b2 = document.getElementById('badgeCard2');
+            const b3 = document.getElementById('badgeCard3');
+
+            if (team.s1Completed) b1.classList.remove('opacity-50'); else b1.classList.add('opacity-50');
+            if (team.s2Completed) b2.classList.remove('opacity-50'); else b2.classList.add('opacity-50');
+            if (team.s3Completed) b3.classList.remove('opacity-50'); else b3.classList.add('opacity-50');
+        }
+
+        /* ==========================================================================
+           4. STAGE SWITCHING & ACTIVITY RENDERING
+           ========================================================================== */
+        function switchStage(stageNum) {
+            const team = getActiveTeam();
+
+            // Lock enforcement
+            if (stageNum === 2 && !team.s1Completed) {
+                showMsg('Stage Locked', 'Complete Stage 1 first to unlock Stage 2 memories!');
+                return;
+            }
+            if (stageNum === 3 && !team.s2Completed) {
+                showMsg('Stage Locked', 'Complete Stage 2 first to unlock the Stage 3 mystery case!');
+                return;
+            }
+
+            document.getElementById('stage1View').classList.add('hidden');
+            document.getElementById('stage2View').classList.add('hidden');
+            document.getElementById('stage3View').classList.add('hidden');
+
+            // Reset navigation styles
+            ['navStage1', 'navStage2', 'navStage3'].forEach(id => {
+                document.getElementById(id).classList.remove('border-time-cyan', 'border-time-purple', 'border-time-orange');
+            });
+
+            if (stageNum === 1) {
+                document.getElementById('stage1View').classList.remove('hidden');
+                document.getElementById('navStage1').classList.add('border-time-cyan');
+            } else if (stageNum === 2) {
+                document.getElementById('stage2View').classList.remove('hidden');
+                document.getElementById('navStage2').classList.add('border-time-purple');
+                initStage2();
+            } else if (stageNum === 3) {
+                document.getElementById('stage3View').classList.remove('hidden');
+                document.getElementById('navStage3').classList.add('border-time-orange');
+                initStage3();
+            }
+        }
+
+        /* Change Active Playing Team */
+        function changeActiveTeam(teamId) {
+            gameState.activeTeamId = teamId;
+            saveGameState();
+        }
+
+        /* Add XP to current active team */
+        function awardXp(amount, reason = '') {
+            const team = getActiveTeam();
+            if (team) {
+                team.xp += amount;
+                saveGameState();
+                if (reason) {
+                    showMsg('XP Awarded!', `+${amount} XP given to ${team.name} (${reason})`);
+                }
+            }
+        }
+
+        /* ==========================================================================
+           5. STAGE 1 LOGIC: RECOVER THE VERBS
+           ========================================================================== */
+        function setStage1Task(taskType) {
+            document.getElementById('s1TaskMatch').classList.add('hidden');
+            document.getElementById('s1TaskMcq').classList.add('hidden');
+            document.getElementById('s1TaskFill').classList.add('hidden');
+
+            document.getElementById('btnTaskMatch').className = 'px-3 py-1.5 rounded-xl text-slate-500 hover:text-slate-800';
+            document.getElementById('btnTaskMcq').className = 'px-3 py-1.5 rounded-xl text-slate-500 hover:text-slate-800';
+            document.getElementById('btnTaskFill').className = 'px-3 py-1.5 rounded-xl text-slate-500 hover:text-slate-800';
+
+            if (taskType === 'match') {
+                document.getElementById('s1TaskMatch').classList.remove('hidden');
+                document.getElementById('btnTaskMatch').className = 'px-3 py-1.5 rounded-xl bg-white text-time-blue shadow-sm font-bold';
+            } else if (taskType === 'mcq') {
+                document.getElementById('s1TaskMcq').classList.remove('hidden');
+                document.getElementById('btnTaskMcq').className = 'px-3 py-1.5 rounded-xl bg-white text-time-blue shadow-sm font-bold';
+                renderMcqQuestion();
+            } else if (taskType === 'fill') {
+                document.getElementById('s1TaskFill').classList.remove('hidden');
+                document.getElementById('btnTaskFill').className = 'px-3 py-1.5 rounded-xl bg-white text-time-blue shadow-sm font-bold';
+                renderFillQuestions();
+            }
+        }
+
+        /* Task 1: Matching Logic */
+        function initMatchingGame() {
+            const baseCol = document.getElementById('matchBaseCol');
+            const pastCol = document.getElementById('matchPastCol');
+            baseCol.innerHTML = '';
+            pastCol.innerHTML = '';
+            selectedBaseVerb = null;
+            matchedPairsCount = 0;
+
+            // Shuffle verbs for right column
+            const shuffledPast = [...VERB_PAIRS].sort(() => Math.random() - 0.5);
+
+            VERB_PAIRS.forEach(pair => {
+                const btn = document.createElement('button');
+                btn.id = `base-${pair.base}`;
+                btn.className = 'w-full text-left px-4 py-3 bg-white border-2 border-slate-200 rounded-2xl font-bold text-slate-700 hover:border-time-cyan transition shadow-sm text-sm';
+                btn.innerText = pair.base;
+                btn.onclick = () => selectBaseVerb(pair.base);
+                baseCol.appendChild(btn);
+            });
+
+            shuffledPast.forEach(pair => {
+                const btn = document.createElement('button');
+                btn.id = `past-${pair.past}`;
+                btn.className = 'w-full text-left px-4 py-3 bg-white border-2 border-slate-200 rounded-2xl font-bold text-slate-700 hover:border-time-purple transition shadow-sm text-sm';
+                btn.innerText = pair.past;
+                btn.onclick = () => selectPastVerb(pair.past);
+                pastCol.appendChild(btn);
+            });
+        }
+
+        function selectBaseVerb(base) {
+            // Unhighlight previous
+            VERB_PAIRS.forEach(p => {
+                const b = document.getElementById(`base-${p.base}`);
+                if (b && !b.disabled) b.classList.remove('border-time-cyan', 'bg-cyan-50');
+            });
+
+            selectedBaseVerb = base;
+            const btn = document.getElementById(`base-${base}`);
+            if (btn) btn.classList.add('border-time-cyan', 'bg-cyan-50');
+        }
+
+        function selectPastVerb(past) {
+            if (!selectedBaseVerb) {
+                showMsg('Select Base Verb First', 'Please click a base verb on the left before picking a past form.');
+                return;
+            }
+
+            const pair = VERB_PAIRS.find(p => p.base === selectedBaseVerb);
+            if (pair.past === past) {
+                // Correct match
+                awardXp(10);
+                matchedPairsCount++;
+
+                const baseBtn = document.getElementById(`base-${selectedBaseVerb}`);
+                const pastBtn = document.getElementById(`past-${past}`);
+
+                baseBtn.disabled = true;
+                pastBtn.disabled = true;
+
+                baseBtn.className = 'w-full text-left px-4 py-3 bg-emerald-50 border-2 border-emerald-400 text-emerald-800 rounded-2xl font-bold text-sm shadow-sm opacity-80';
+                pastBtn.className = 'w-full text-left px-4 py-3 bg-emerald-50 border-2 border-emerald-400 text-emerald-800 rounded-2xl font-bold text-sm shadow-sm opacity-80';
+
+                baseBtn.innerHTML += ' ✓';
+                pastBtn.innerHTML += ' ✓';
+
+                selectedBaseVerb = null;
+
+                if (matchedPairsCount === VERB_PAIRS.length) {
+                    checkStage1Completion();
+                }
+            } else {
+                // Immediate Feedback for mistake
+                showMsg('Incorrect Match', `The past tense of "${selectedBaseVerb}" is NOT "${past}". Correct form is "${pair.past}". Try again!`);
+            }
+        }
+
+        /* Task 2: MCQ Logic */
+        function renderMcqQuestion() {
+            const container = document.getElementById('mcqContainer');
+            document.getElementById('mcqCounter').innerText = `Question ${currentMcqIndex + 1} of ${S1_MCQ_QUESTIONS.length}`;
+
+            const qData = S1_MCQ_QUESTIONS[currentMcqIndex];
+            container.innerHTML = `
+                <h3 class="text-lg font-black text-slate-800">${qData.q}</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md mx-auto">
+                    ${qData.options.map(opt => `
+                        <button onclick="checkMcqAnswer('${opt}')" class="p-3.5 bg-white border-2 border-slate-200 hover:border-time-blue hover:bg-sky-50 rounded-2xl font-bold text-slate-700 text-sm transition">
+                            ${opt}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function checkMcqAnswer(selected) {
+            const qData = S1_MCQ_QUESTIONS[currentMcqIndex];
+            if (selected === qData.correct) {
+                awardXp(10);
+                if (currentMcqIndex < S1_MCQ_QUESTIONS.length - 1) {
+                    currentMcqIndex++;
+                    renderMcqQuestion();
+                } else {
+                    showMsg('MCQ Complete!', 'You answered all multiple-choice questions correctly!');
+                    checkStage1Completion();
+                }
+            } else {
+                showMsg('Incorrect Choice', `Incorrect option selected. The correct Simple Past form is "${qData.correct}".`);
+            }
+        }
+
+        /* Task 3: Fill in Blanks Logic */
+        function renderFillQuestions() {
+            const container = document.getElementById('fillContainer');
+            container.innerHTML = '';
+
+            S1_FILL_QUESTIONS.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = 'bg-slate-50 border border-slate-200 p-4 rounded-2xl flex flex-wrap items-center gap-2 text-sm md:text-base font-medium';
+                div.innerHTML = `
+                    <span>${index + 1}. ${q.prompt}</span>
+                    <input type="text" id="s1Fill_${index}" placeholder="(${q.verb})" class="border-2 border-slate-300 rounded-xl px-3 py-1 font-bold text-time-purple focus:outline-none focus:border-time-purple w-32 text-center">
+                    <span>${q.post}</span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function checkFillAnswers() {
+            let correctCount = 0;
+            S1_FILL_QUESTIONS.forEach((q, index) => {
+                const input = document.getElementById(`s1Fill_${index}`);
+                const val = input.value.trim().toLowerCase();
+                if (val === q.answer.toLowerCase()) {
+                    correctCount++;
+                    input.className = 'border-2 border-emerald-500 bg-emerald-50 text-emerald-800 rounded-xl px-3 py-1 font-bold w-32 text-center';
+                } else {
+                    input.className = 'border-2 border-rose-500 bg-rose-50 text-rose-800 rounded-xl px-3 py-1 font-bold w-32 text-center';
+                }
+            });
+
+            if (correctCount === S1_FILL_QUESTIONS.length) {
+                awardXp(40, 'Completed Fill-in-Blanks Task');
+                checkStage1Completion();
+            } else {
+                showMsg('Check Answers', `You got ${correctCount} out of ${S1_FILL_QUESTIONS.length} correct. Red fields need correction!`);
+            }
+        }
+
+        function checkStage1Completion() {
+            const team = getActiveTeam();
+            if (!team.s1Completed) {
+                team.s1Completed = true;
+                team.stage = Math.max(team.stage, 2);
+                awardXp(50, 'Stage 1 Completion Bonus!');
+                saveGameState();
+                showMsg('Stage 1 Complete! 🎉', 'You have unlocked "Verb Hunter" badge & Stage 2: Rebuild the Memories!');
+            }
+        }
+
+        /* ==========================================================================
+           6. STAGE 2 LOGIC: REBUILD THE MEMORIES
+           ========================================================================== */
+        function initStage2() {
+            const container = document.getElementById('stage2CardsContainer');
+            container.innerHTML = '';
+
+            S2_STRUCTURE_QUESTIONS.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50 border border-slate-200 p-5 rounded-2xl space-y-3';
+
+                if (q.type === 'mcq' || q.type === 'correction') {
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black uppercase text-time-purple">${q.title}</span>
+                            <span class="text-xs font-bold text-slate-400">Question ${q.id}</span>
+                        </div>
+                        <p class="text-sm font-bold text-slate-800">${q.prompt}</p>
+                        <div class="space-y-2">
+                            ${q.options.map((opt, i) => `
+                                <label class="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:bg-purple-50/50 transition text-sm font-medium">
+                                    <input type="radio" name="s2_q${q.id}" value="${i}" class="text-time-purple focus:ring-time-purple">
+                                    <span>${opt}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    `;
+                } else if (q.type === 'fill') {
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black uppercase text-time-purple">${q.title}</span>
+                            <span class="text-xs font-bold text-slate-400">Question ${q.id}</span>
+                        </div>
+                        <p class="text-sm font-bold text-slate-800">${q.prompt}</p>
+                        <input type="text" id="s2_q${q.id}_fill" placeholder="Type answer here..." class="border border-slate-300 rounded-xl p-2.5 text-sm w-full font-bold focus:outline-none focus:ring-2 focus:ring-time-purple">
+                    `;
+                }
+                container.appendChild(card);
+            });
+        }
+
+        function checkStage2Sentences() {
+            let correct = 0;
+
+            // Q1 MCQ
+            const q1Opt = document.querySelector('input[name="s2_q1"]:checked');
+            if (q1Opt && parseInt(q1Opt.value) === S2_STRUCTURE_QUESTIONS[0].correctIndex) correct++;
+
+            // Q2 MCQ
+            const q2Opt = document.querySelector('input[name="s2_q2"]:checked');
+            if (q2Opt && parseInt(q2Opt.value) === S2_STRUCTURE_QUESTIONS[1].correctIndex) correct++;
+
+            // Q3 Fill
+            const q3Fill = document.getElementById('s2_q3_fill')?.value.trim().toLowerCase();
+            if (q3Fill === 'did') correct++;
+
+            // Q4 Correction
+            const q4Opt = document.querySelector('input[name="s2_q4"]:checked');
+            if (q4Opt && parseInt(q4Opt.value) === S2_STRUCTURE_QUESTIONS[3].correctIndex) correct++;
+
+            document.getElementById('s2Prog').innerText = correct;
+
+            if (correct === 4) {
+                const team = getActiveTeam();
+                if (!team.s2Completed) {
+                    team.s2Completed = true;
+                    team.stage = Math.max(team.stage, 3);
+                    awardXp(60, 'Stage 2 Completion Bonus!');
+                    saveGameState();
+                    showMsg('Stage 2 Mastery! 🏆', 'You unlocked the "Past Tense Master" badge & Stage 3: The Lost Memories Case!');
+                } else {
+                    showMsg('Excellent!', 'All Stage 2 structure challenges answered correctly!');
+                }
+            } else {
+                showMsg('Structure Check', `You got ${correct} of 4 correct. Remember: Use "did/didn't + base verb" for negative & interrogative forms!`);
+            }
+        }
+
+        /* ==========================================================================
+           7. STAGE 3 LOGIC: THE LOST MEMORIES CASE
+           ========================================================================== */
+        function initStage3() {
+            const compContainer = document.getElementById('s3CompQuestions');
+            compContainer.innerHTML = '';
+
+            S3_COMPREHENSION.forEach(q => {
+                const div = document.createElement('div');
+                div.className = 'bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2';
+                div.innerHTML = `
+                    <p class="text-xs font-bold text-slate-800">${q.q}</p>
+                    <select id="s3_comp_${q.id}" class="w-full border border-slate-200 rounded-xl p-2 text-xs bg-white font-semibold focus:outline-none focus:ring-2 focus:ring-time-orange">
+                        <option value="">-- Choose Answer --</option>
+                        ${q.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                    </select>
+                `;
+                compContainer.appendChild(div);
+            });
+
+            // Populate current team inputs if existing
+            const team = getActiveTeam();
+            if (team && team.s3Sentences) {
+                document.getElementById('s3AffirmativeInput').value = team.s3Sentences.aff || '';
+                document.getElementById('s3NegativeInput').value = team.s3Sentences.neg || '';
+                document.getElementById('s3InterrogativeInput').value = team.s3Sentences.int || '';
+            }
+        }
+
+        function submitStage3Answers() {
+            // Check Comprehension Answers
+            let compCorrect = 0;
+            S3_COMPREHENSION.forEach(q => {
+                const sel = document.getElementById(`s3_comp_${q.id}`)?.value;
+                if (sel === q.correct) compCorrect++;
+            });
+
+            if (compCorrect < S3_COMPREHENSION.length) {
+                showMsg('Case Incomplete', `Please answer all comprehension questions correctly. You got ${compCorrect}/${S3_COMPREHENSION.length}.`);
+                return;
+            }
+
+            const aff = document.getElementById('s3AffirmativeInput').value.trim();
+            const neg = document.getElementById('s3NegativeInput').value.trim();
+            const int = document.getElementById('s3InterrogativeInput').value.trim();
+
+            if (!aff || !neg || !int) {
+                showMsg('Sentences Required', 'Please construct all 3 sentences (Affirmative, Negative, Interrogative) before submitting.');
+                return;
+            }
+
+            const team = getActiveTeam();
+            team.s3Sentences = { aff, neg, int, graded: team.s3Sentences.graded || false };
+
+            if (!team.s3Completed) {
+                team.s3Completed = true;
+                awardXp(50, 'Submitted Case Sentences');
+                saveGameState();
+            } else {
+                saveGameState();
+            }
+
+            document.getElementById('s3SaveStatus').innerText = '✓ Sentences saved for Teacher Review!';
+
+            // Check if victory modal should be shown
+            checkVictoryCondition();
+        }
+
+        function checkVictoryCondition() {
+            const team = getActiveTeam();
+            if (team.s1Completed && team.s2Completed && team.s3Completed) {
+                document.getElementById('winningTeamName').innerText = team.name;
+                document.getElementById('winningTeamXP').innerText = team.xp + ' XP';
+                document.getElementById('victoryModal').classList.remove('hidden');
+            }
+        }
+
+        function closeVictoryModal() {
+            document.getElementById('victoryModal').classList.add('hidden');
+        }
+
+        /* ==========================================================================
+           8. TEACHER HUB CONTROLS & MANUAL OVERRIDES
+           ========================================================================== */
+        function toggleTeacherPanel() {
+            const modal = document.getElementById('teacherModal');
+            modal.classList.toggle('hidden');
+
+            if (!modal.classList.contains('hidden')) {
+                document.getElementById('classNameInput').value = gameState.className || '';
+                renderTeacherInputs();
+                renderTeacherSentenceReview();
+            }
+        }
+
+        function renderTeacherInputs() {
+            // Populate Team Edit Inputs
+            const container = document.getElementById('teacherTeamInputs');
+            container.innerHTML = '';
+
+            gameState.teams.forEach((t, i) => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center gap-2';
+                div.innerHTML = `
+                    <span class="text-xs font-bold text-slate-400 w-16">Team ${i + 1}:</span>
+                    <input type="text" id="teacherTeamName_${t.id}" value="${t.name}" class="flex-1 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold">
+                `;
+                container.appendChild(div);
+            });
+
+            // Populate Manual Select
+            const manualSelect = document.getElementById('manualTeamSelect');
+            manualSelect.innerHTML = '';
+            gameState.teams.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.id;
+                opt.innerText = `${t.name} (${t.xp} XP)`;
+                manualSelect.appendChild(opt);
+            });
+        }
+
+        function saveClassName() {
+            const val = document.getElementById('classNameInput').value.trim();
+            if (val) {
+                gameState.className = val;
+                saveGameState();
+                showMsg('Class Updated', `Class name changed to: "${val}"`);
+            }
+        }
+
+        function saveTeamNames() {
+            gameState.teams.forEach(t => {
+                const input = document.getElementById(`teacherTeamName_${t.id}`);
+                if (input && input.value.trim()) {
+                    t.name = input.value.trim();
+                }
+            });
+            saveGameState();
+            showMsg('Teams Saved', 'All team names have been updated successfully.');
+        }
+
+        function applyManualXp() {
+            const teamId = document.getElementById('manualTeamSelect').value;
+            const delta = parseInt(document.getElementById('manualXpDelta').value);
+
+            if (isNaN(delta)) {
+                showMsg('Invalid Value', 'Please enter a valid number for XP adjustment.');
+                return;
+            }
+
+            const team = gameState.teams.find(t => t.id === teamId);
+            if (team) {
+                team.xp = Math.max(0, team.xp + delta);
+                saveGameState();
+                renderTeacherInputs();
+                showMsg('XP Adjusted', `${delta >= 0 ? '+' : ''}${delta} XP assigned to ${team.name}.`);
+            }
+        }
+
+        function renderTeacherSentenceReview() {
+            const list = document.getElementById('teacherSentenceReviewList');
+            list.innerHTML = '';
+
+            gameState.teams.forEach(t => {
+                const div = document.createElement('div');
+                div.className = 'bg-white border border-slate-200 p-3 rounded-xl space-y-2 text-xs';
+
+                const s = t.s3Sentences || {};
+                div.innerHTML = `
+                    <div class="flex justify-between items-center border-b pb-1 font-bold">
+                        <span class="text-time-purple">${t.name}</span>
+                        <span class="${s.graded ? 'text-emerald-600' : 'text-amber-600'}">${s.graded ? 'Graded ✓' : 'Pending Review'}</span>
+                    </div>
+                    <p><strong>Affirmative:</strong> ${s.aff || '<em>Not submitted</em>'}</p>
+                    <p><strong>Negative:</strong> ${s.neg || '<em>Not submitted</em>'}</p>
+                    <p><strong>Interrogative:</strong> ${s.int || '<em>Not submitted</em>'}</p>
+                    <div class="flex items-center gap-2 pt-1">
+                        <button onclick="awardTeacherSentenceBonus('${t.id}', 30)" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-1 rounded-lg font-bold">
+                            Approve &amp; Award +30 XP
+                        </button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function awardTeacherSentenceBonus(teamId, bonusXp) {
+            const team = gameState.teams.find(t => t.id === teamId);
+            if (team) {
+                team.xp += bonusXp;
+                if (!team.s3Sentences) team.s3Sentences = {};
+                team.s3Sentences.graded = true;
+                saveGameState();
+                renderTeacherSentenceReview();
+                showMsg('Bonus Awarded', `Awarded +${bonusXp} XP to ${team.name} for sentence case accuracy!`);
+            }
+        }
+
+        /* ==========================================================================
+           9. CSV EXPORT & DATA RESET CONTROLS
+           ========================================================================== */
+        function exportScoresCSV() {
+            let csv = 'Class Name,Team Name,Total XP,Stage 1 Completed,Stage 2 Completed,Stage 3 Completed,Affirmative Sentence,Negative Sentence,Interrogative Sentence\n';
+
+            gameState.teams.forEach(t => {
+                const s = t.s3Sentences || {};
+                const aff = `"${(s.aff || '').replace(/"/g, '""')}"`;
+                const neg = `"${(s.neg || '').replace(/"/g, '""')}"`;
+                const int = `"${(s.int || '').replace(/"/g, '""')}"`;
+
+                csv += `"${gameState.className}","${t.name}",${t.xp},${t.s1Completed},${t.s2Completed},${t.s3Completed},${aff},${neg},${int}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `Time_Travelers_Scores_${new Date().toISOString().slice(0, 10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function confirmResetAllData() {
+            if (confirm('Are you sure you want to reset all team scores, names, and progress? This action cannot be undone.')) {
+                localStorage.removeItem(STORAGE_KEY);
+                gameState = {
+                    className: 'Class 6A Time Explorers',
+                    activeTeamId: 'team_1',
+                    teams: [
+                        { id: 'team_1', name: 'Chronos Crew', xp: 0, stage: 1, s1Completed: false, s2Completed: false, s3Completed: false, s3Sentences: { aff: '', neg: '', int: '', graded: false } },
+                        { id: 'team_2', name: 'Quantum Seekers', xp: 0, stage: 1, s1Completed: false, s2Completed: false, s3Completed: false, s3Sentences: { aff: '', neg: '', int: '', graded: false } },
+                        { id: 'team_3', name: 'Temporal Knights', xp: 0, stage: 1, s1Completed: false, s2Completed: false, s3Completed: false, s3Sentences: { aff: '', neg: '', int: '', graded: false } }
+                    ]
+                };
+                saveGameState();
+                switchStage(1);
+                initMatchingGame();
+                toggleTeacherPanel();
+                showMsg('Reset Complete', 'All game records have been reset to initial state.');
+            }
+        }
+
+        /* Modal Dialog Utility */
+        function showMsg(title, body) {
+            document.getElementById('msgTitle').innerText = title;
+            document.getElementById('msgBody').innerText = body;
+            document.getElementById('msgModal').classList.remove('hidden');
+        }
+
+        function closeMsgModal() {
+            document.getElementById('msgModal').classList.add('hidden');
+        }
+
+        /* ==========================================================================
+           10. APP INITIALIZATION ON WINDOW LOAD
+           ========================================================================== */
+        window.onload = function() {
+            loadGameState();
+            initMatchingGame();
+            switchStage(1);
+        };
+    </script>
+</body>
+</html>
